@@ -1,0 +1,54 @@
+﻿@page
+@model BalanceApp.Pages.DataModels.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserData[0].TotalBalance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserData[0].PositiveBalance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserData[0].NegativeBalance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserData[0].ConsolidatedBalance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.UserData) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalBalance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositiveBalance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NegativeBalance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConsolidatedBalance)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
