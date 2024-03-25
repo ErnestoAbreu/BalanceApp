@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BalanceApp.Migrations
 {
     [DbContext(typeof(BalanceAppContext))]
-    [Migration("20240325155255_InitialCreate")]
+    [Migration("20240325170541_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,6 +44,9 @@ namespace BalanceApp.Migrations
 
                     b.Property<int>("TotalBalance")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

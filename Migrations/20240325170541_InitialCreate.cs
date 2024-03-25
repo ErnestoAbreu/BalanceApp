@@ -16,6 +16,7 @@ namespace BalanceApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalBalance = table.Column<int>(type: "int", nullable: false),
                     PositiveBalance = table.Column<int>(type: "int", nullable: false),
                     NegativeBalance = table.Column<int>(type: "int", nullable: false),

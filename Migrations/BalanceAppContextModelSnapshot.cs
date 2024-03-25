@@ -42,6 +42,9 @@ namespace BalanceApp.Migrations
                     b.Property<int>("TotalBalance")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("UserData");
