@@ -9,5 +9,8 @@ namespace BalanceApp.Data
             : base(options)
         {
         }
+        public ApplicationDbContext()
+        {
+        }
     }
 }

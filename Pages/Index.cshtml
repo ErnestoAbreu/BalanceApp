@@ -1,10 +1,80 @@
 ﻿@page
+
+@using BalanceApp.Models
+@using Microsoft.AspNetCore.Identity
+@using BalanceApp
+@using BalanceApp.Pages
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (SignInManager.IsSignedIn(User))
+{
+    UserData userData = ApiRequests.GetUserData(User.getUserId());
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Consolidated Balance</th>
+                <th scope="col">Total Balance</th>
+                <th scope="col">Positive Balance</th>
+                <th scope="col">Negative Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> @userData.ConsolidatedBalance </td>
+                <td> @userData.TotalBalance </td>
+                <td> @userData.PositiveBalance </td>
+                <td> @userData.NegativeBalance </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <h1 class="display-4">Your data</h1>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Consolidate</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+         @userData.userTasks.Count();
+        <tbody>
+            @foreach(UserTask item in userData.userTasks)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" />
+                    </td>
+                    <td>
+                        @item.Value
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div>
+        <h1 class="display-4">Welcome to Balance App</h1>
+        <p>Please <a href="Identity/Account/Login">Login</a> to access your data.</p>
+    </div>
+}

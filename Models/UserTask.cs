@@ -5,6 +5,8 @@
         public int Id { get; set; }
         public int Value { get; set; } = 0;
         public string? Description { get; set; }
-        public bool IsConsolidated { get; set; }
+        public bool IsConsolidated { get; set; } = false;
+
+        public int UserDataId { get; set; }
     }
 }

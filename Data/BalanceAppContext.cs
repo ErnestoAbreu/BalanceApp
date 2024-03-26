@@ -14,6 +14,7 @@ namespace BalanceApp.Data
         {
         }
 
-        public DbSet<BalanceApp.Models.UserData> UserData { get; set; } = default!;
+        public DbSet<UserData> UserData { get; set; } = default!;
+        public DbSet<UserTask> UserTasks { get; set; } = default!;
     }
 }
