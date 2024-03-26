@@ -18,10 +18,13 @@ namespace BalanceApp
 
         static public UserData GetUserData(string userId)
         {
-            var client = new RestClient("https://localhost:7033/api/App");
-            
-            var request = new RestRequest();
+            var client = new RestClient("https://localhost:7033/");
 
+            var request = new RestRequest("api/App");
+
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+           
             request.AddQueryParameter("userId", userId);
 
             client.Post(request);

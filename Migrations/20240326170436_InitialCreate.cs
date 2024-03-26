@@ -28,7 +28,7 @@ namespace BalanceApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTask",
+                name: "UserTasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -36,21 +36,22 @@ namespace BalanceApp.Migrations
                     Value = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsConsolidated = table.Column<bool>(type: "bit", nullable: false),
-                    UserDataId = table.Column<int>(type: "int", nullable: true)
+                    UserDataId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTask", x => x.Id);
+                    table.PrimaryKey("PK_UserTasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserTask_UserData_UserDataId",
+                        name: "FK_UserTasks_UserData_UserDataId",
                         column: x => x.UserDataId,
                         principalTable: "UserData",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTask_UserDataId",
-                table: "UserTask",
+                name: "IX_UserTasks_UserDataId",
+                table: "UserTasks",
                 column: "UserDataId");
         }
 
@@ -58,7 +59,7 @@ namespace BalanceApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserTask");
+                name: "UserTasks");
 
             migrationBuilder.DropTable(
                 name: "UserData");
