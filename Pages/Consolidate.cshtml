@@ -1,0 +1,22 @@
+﻿@page
+@model BalanceApp.Pages.ConsolidateModel
+
+
+@{
+    ViewData[ "Title" ] = "Consolidate";
+}
+
+<h1>Consolidate</h1>
+
+<h3>Are you sure you want to consolidate this?</h3>
+<p>this action will consolidate the tasks that precede this one as well. </p>
+
+<hr />
+
+<div>
+    <form method="post">
+        <input type="hidden" asp-for="UserTask.Id" />
+        <input type="submit" value="Consolidate" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

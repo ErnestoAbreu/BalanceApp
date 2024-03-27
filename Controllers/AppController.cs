@@ -3,6 +3,7 @@ using BalanceApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Security.Policy;
 
 namespace BalanceApp.Controllers
@@ -172,6 +173,32 @@ namespace BalanceApp.Controllers
 
             _context.UserTasks.Remove(task);
             
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut("consolidate/{id}")]
+        public async Task<ActionResult<UserTask>> ConsolidateTasks(int id, string userId)
+        {
+            var user = await _context.UserData.FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if(user == null)
+            {
+                return BadRequest();
+            }
+
+            var tasks = _context.UserTasks.Where(x => x.UserDataId == user.Id);
+
+            foreach(var task in tasks)
+            {
+                if (task.Id <= id && !task.IsConsolidated)
+                {
+                    task.IsConsolidated = true;
+                    user.ConsolidatedBalance += task.Value;
+                }
+            }
+
             await _context.SaveChangesAsync();
 
             return Ok();

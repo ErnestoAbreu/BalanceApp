@@ -62,22 +62,45 @@
         <tbody>
             @foreach (var item in Model.UserTask)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Value)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsConsolidated)
-                    </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                @if( !item.IsConsolidated)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Value)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsConsolidated)
+                        </td>
+                        <td align="right">
+                        
+                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
+                            <a asp-page="./Consolidate" asp-route-id="@item.Id">Consolidate</a>
+                       
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="table-secondary">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Value)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsConsolidated)
+                        </td>
+                        <td align="right">
+                             <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                        <td>
+                    </tr>
+                }
             }
     </tbody>
 </table>

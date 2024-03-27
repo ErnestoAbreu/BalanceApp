@@ -96,6 +96,21 @@ namespace BalanceApp
             }
             return false;
         }
+
+        static public async Task<bool> ConsolidateTaskAsync(int id, string userId)
+        {
+            var request = new RestRequest("consolidate/" + id);
+
+            request.AddQueryParameter("userId", userId);
+
+            var response = await client.PutAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
         
         /// <summary>
         /// User ID
