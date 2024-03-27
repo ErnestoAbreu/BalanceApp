@@ -74,7 +74,7 @@ namespace BalanceApp.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult> CreateTask(string userId, UserTask userTask)
+        public async Task<IActionResult> CreateTask(string userId, UserTask userTask)
         {
             var user = await _context.UserData.FirstOrDefaultAsync(x => x.UserId == userId);
 
@@ -119,7 +119,7 @@ namespace BalanceApp.Controllers
 
             var newTask = await _context.UserTasks.Where(x => x.UserDataId == user.Id).FirstOrDefaultAsync(x => x.Id == id);
 
-            if (newTask == null)
+            if (newTask == null || newTask.IsConsolidated)
             {
                 return NotFound();
             }
@@ -131,11 +131,8 @@ namespace BalanceApp.Controllers
             else
                 user.NegativeBalance -= newTask.Value;
 
-            newTask.UserDataId = task.UserDataId;
-            newTask.IsConsolidated = task.IsConsolidated;
-            newTask.Id = task.Id;
-            newTask.Description = task.Description;
             newTask.Value = task.Value;
+            newTask.Description = task.Description;
 
             user.TotalBalance += newTask.Value;
 
@@ -161,7 +158,7 @@ namespace BalanceApp.Controllers
 
             var task = await _context.UserTasks.Where(x => x.UserDataId == user.Id).FirstOrDefaultAsync(x => x.Id == id);
 
-            if(task == null)
+            if(task == null || task.IsConsolidated)
             {
                 return NotFound();
             }

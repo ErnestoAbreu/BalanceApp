@@ -3,7 +3,7 @@
 @using BalanceApp.Models
 @using Microsoft.AspNetCore.Identity
 @using BalanceApp
-@using BalanceApp.Pages
+@using BalanceApp.Pages.UserTasks
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
@@ -12,10 +12,12 @@
     ViewData["Title"] = "Home page";
 }
 
+<div class="text-center">
+    <h1 class="display-4"> Balance APP</h1>
+</div>
+
 @if (SignInManager.IsSignedIn(User))
 {
-    UserData userData = ApiRequests.GetUserData(User.getUserId());
-
     <table class="table">
         <thead>
             <tr>
@@ -27,38 +29,48 @@
         </thead>
         <tbody>
             <tr>
-                <td> @userData.ConsolidatedBalance </td>
-                <td> @userData.TotalBalance </td>
-                <td> @userData.PositiveBalance </td>
-                <td> @userData.NegativeBalance </td>
+                <td> @Model.UserData.ConsolidatedBalance </td>
+                <td> @Model.UserData.TotalBalance </td>
+                <td> @Model.UserData.PositiveBalance </td>
+                <td> @Model.UserData.NegativeBalance </td>
             </tr>
         </tbody>
     </table>
 
     <div class="text-center">
-        <h1 class="display-4">Your data</h1>
+        <h2 class="display-6">Your data</h2>
     </div>
 
+    <p>
+        <a asp-page="Create">Create New</a>
+    </p>
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Consolidate</th>
-                <th scope="col">Cost</th>
-                <th scope="col">Description</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserTask[ 0 ].Value)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserTask[ 0 ].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserTask[ 0 ].IsConsolidated)
+                </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach(UserTask item in userData.userTasks)
+            @foreach (var item in Model.UserTask)
             {
                 <tr>
                     <td>
-                        <input type="checkbox" />
+                        @Html.DisplayFor(modelItem => item.Value)
                     </td>
                     <td>
-                        @item.Value
+                        @Html.DisplayFor(modelItem => item.Description)
                     </td>
                     <td>
-                        @item.Description
+                        @Html.DisplayFor(modelItem => item.IsConsolidated)
                     </td>
                     <td>
                         <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
@@ -67,13 +79,13 @@
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
+    </tbody>
+</table>
 }
 else
 {
     <div>
-        <h1 class="display-4">Welcome to Balance App</h1>
+        <h2 class="display-6">Welcome to Balance App</h2>
         <p>Please <a href="Identity/Account/Login">Login</a> to access your data.</p>
     </div>
 }

@@ -1,20 +1,30 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using BalanceApp.Data;
+using BalanceApp.Models;
+using Microsoft.AspNetCore.Identity;
 
-namespace BalanceApp.Pages
+namespace BalanceApp.Pages.UserTasks
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        public UserData UserData { get; set; } = default!;
+        public IList<UserTask> UserTask { get; set; } = default!;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public async Task OnGetAsync()
         {
-            _logger = logger;
-        }
+            UserData userData = null;
 
-        public void OnGet()
-        {
+            if(User.Identity.IsAuthenticated)
+                userData = await ApiRequests.GetUserDataAsync(User.getUserId());
 
+            if (userData == null)
+            {
+                return;
+            }
+
+            UserData = userData;
+            UserTask = userData.userTasks;
         }
     }
 }

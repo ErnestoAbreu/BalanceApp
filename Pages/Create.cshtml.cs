@@ -8,24 +8,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BalanceApp.Data;
 using BalanceApp.Models;
 
-namespace BalanceApp.Pages.DataModels
+namespace BalanceApp.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly BalanceApp.Data.BalanceAppContext _context;
-
-        public CreateModel(BalanceApp.Data.BalanceAppContext context)
-        {
-            _context = context;
-        }
-
         public IActionResult OnGet()
         {
             return Page();
         }
 
         [BindProperty]
-        public UserData UserData { get; set; } = default!;
+        public UserTask UserTask { get; set; } = default!;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -35,10 +28,12 @@ namespace BalanceApp.Pages.DataModels
                 return Page();
             }
 
-            _context.UserData.Add(UserData);
-            await _context.SaveChangesAsync();
+            if (await ApiRequests.CreateTask(User.getUserId(), UserTask))
+            {
+                return RedirectToPage("./Index");
+            }
 
-            return RedirectToPage("./Index");
+            return Page();
         }
     }
 }
